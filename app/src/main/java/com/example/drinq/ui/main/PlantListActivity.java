@@ -5,12 +5,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.drink.R;
-import com.example.drinq.data.entity.PlantEntity;
-import com.example.drinq.ui.main.PlantListAdapter;
 
 public class PlantListActivity extends AppCompatActivity {
 
@@ -20,7 +17,7 @@ public class PlantListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.plant_list_activity);
+        setContentView(R.layout.activity_plant_list);
 
         RecyclerView recyclerView = findViewById(R.id.plant_list_recyclerview);
         final PlantListAdapter adapter = new PlantListAdapter(new PlantListAdapter.PlantDiff());
