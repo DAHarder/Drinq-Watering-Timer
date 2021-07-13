@@ -6,17 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.example.drinq.ui.plant.PlantEditActivity">
 
-    <!--    private String plantName;-->
-    <!--    private String plantDescription;-->
-    <!--    private String setDate;-->
-    <!--    private int wateringInterval;-->
-    <!--    private boolean needsWater;-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:background="@android:color/white"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -35,16 +28,30 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_baseline_circle_24" />
 
-
-            <EditText
-                android:id="@+id/plant_name_edit"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:hint="Plant Name"
-                android:inputType="textPersonName"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:hint="Plant name:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                <EditText
+                    android:id="@+id/plant_name_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:hint="Plant Name"
+                    android:maxLength="30"
+                    android:inputType="textPersonName"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -52,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:orientation="horizontal">
+
 
             <ImageView
                 android:layout_width="45dp"
@@ -64,15 +72,23 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:hint="Description:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
                 <EditText
                     android:id="@+id/plant_description_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:gravity="top|left"
                     android:hint="Plant description"
-                    android:inputType="textMultiLine"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:scrollbars="vertical"
+                    android:maxLength="30"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
             </LinearLayout>
         </LinearLayout>
@@ -93,6 +109,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:hint="Watering interval (in days):"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                 <EditText
                     android:id="@+id/plant_watering_interval_edit_text"
@@ -131,6 +154,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Last Watered:"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
                 <TextView
                     android:id="@+id/plant_last_watered_date_text"
                     android:layout_width="match_parent"

@@ -9,8 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DrinqCapstoneProject">
-        <activity android:name="com.example.drinq.ui.plant.PlantEditActivity"></activity>
-        <activity android:name="com.example.drinq.ui.main.PlantListActivity">
+        <activity android:name="com.example.drinq.ui.plant.PlantEditActivity"
+            android:parentActivityName="com.example.drinq.ui.main.PlantListActivity">
+        </activity>
+        <activity android:name="com.example.drinq.ui.main.PlantListActivity"
+            android:label="Plant List">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

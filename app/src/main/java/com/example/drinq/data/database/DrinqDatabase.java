@@ -15,8 +15,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@androidx.room.Database(entities = {PlantEntity.class}, version = 1, exportSchema = false)
+@androidx.room.Database(entities = {PlantEntity.class}, version = 3, exportSchema = false)
 public abstract class DrinqDatabase extends RoomDatabase {
+
+    private static volatile DrinqDatabase INSTANCE;
+
     public abstract PlantDao plantDao();
 
     private static final int NUMBER_OF_THREADS = 4;
@@ -24,9 +27,7 @@ public abstract class DrinqDatabase extends RoomDatabase {
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    private static volatile DrinqDatabase INSTANCE;
-
-    static DrinqDatabase getDatabase(final Context context) {
+    static synchronized DrinqDatabase getDatabase(final Context context) {
         if(INSTANCE == null) {
             synchronized (DrinqDatabase.class) {
                 if(INSTANCE == null) {

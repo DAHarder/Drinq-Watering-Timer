@@ -1,5 +1,7 @@
 package com.example.drinq.ui.main;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +16,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.drink.R;
 import com.example.drinq.data.entity.PlantEntity;
+import com.example.drinq.ui.plant.PlantEditActivity;
 
 //---ADAPTER---
 public class PlantListAdapter extends ListAdapter<PlantEntity, PlantListAdapter.PlantListViewHolder> {
 
-    public PlantListAdapter(@NonNull DiffUtil.ItemCallback<PlantEntity> diffCallback) {
+    private final Context context;
+
+    public PlantListAdapter(@NonNull DiffUtil.ItemCallback<PlantEntity> diffCallback, Context context) {
         super(diffCallback);
+        this.context = context;
     }
 
     @Override
@@ -62,10 +68,9 @@ class PlantListViewHolder extends RecyclerView.ViewHolder {
                 public void onClick (View v) {
                     int position = getAdapterPosition();
                    final PlantEntity currentPlant = getItem(position);
-
-//                    System.out.println(currentPlant.getPlantName());
-                    //todo finish this
-
+                    Intent intent = new Intent(context, PlantEditActivity.class);
+                    intent.putExtra("plant", currentPlant);
+                    ((Activity) context).startActivityForResult(intent, 1);
                 }
             });
 

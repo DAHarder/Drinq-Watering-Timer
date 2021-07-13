@@ -1,13 +1,26 @@
 package com.example.drinq.ui.main;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.drink.R;
+import com.example.drinq.data.database.DrinqRepository;
+import com.example.drinq.data.entity.PlantEntity;
+import com.example.drinq.ui.plant.PlantEditActivity;
+
+import java.util.List;
 
 public class PlantListActivity extends AppCompatActivity {
 
@@ -20,28 +33,38 @@ public class PlantListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_plant_list);
 
         RecyclerView recyclerView = findViewById(R.id.plant_list_recyclerview);
-        final PlantListAdapter adapter = new PlantListAdapter(new PlantListAdapter.PlantDiff());
+        final PlantListAdapter adapter = new PlantListAdapter(new PlantListAdapter.PlantDiff(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mPlantListViewModel = new ViewModelProvider(this).get(PlantListViewModel.class);
 
-        mPlantListViewModel.getAllPlants().observe(this, plantEntities ->  {
-            // Update the cached copy of the words in the adapter.
-            adapter.submitList(plantEntities);
-        });
+        // Update the cached copy of the words in the adapter.
+        mPlantListViewModel.getAllPlants().observe(this, adapter::submitList);
+
+        LiveData<List<PlantEntity>> allPlants = mPlantListViewModel.getAllPlants();
         }
 
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == NEW_PLANT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-//            PlantEntity plant = new PlantEntity(data.getStringExtra(NewWordActivity.EXTRA_REPLY));
-//            mWordViewModel.insert(word);
-//        } else {
-//            Toast.makeText(
-//                    getApplicationContext(),
-//                    R.string.empty_not_saved,
-//                    Toast.LENGTH_LONG).show();
-//        }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+
+            PlantEntity plant = data.getExtras().getParcelable("plantSaved");
+            mPlantListViewModel.insert(plant);
+        }
+    }
+
+        public boolean onCreateOptionsMenu(Menu menu) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.plant_list_menu, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+            Intent intent = new Intent(this, PlantEditActivity.class);
+            this.startActivityForResult(intent, 1);
+
+            return super.onOptionsItemSelected(item);
+        }
     }

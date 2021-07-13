@@ -1,27 +1,29 @@
 package com.example.drinq.data.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "plant_table")
-public class PlantEntity {
+public class PlantEntity implements Parcelable {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     private int plantID;
     @NonNull
     private String plantName;
     private String plantDescription;
-    private String setDate;
+    private String lastWateredDate;
     private int wateringInterval;
     private boolean needsWater;
 
-    public PlantEntity(@NonNull int plantID, @NonNull String plantName, String plantDescription, String setDate, int wateringInterval, boolean needsWater) {
-        this.plantID = plantID;
+    public PlantEntity(@NonNull String plantName, String plantDescription, String lastWateredDate, int wateringInterval, boolean needsWater) {
         this.plantName = plantName;
         this.plantDescription = plantDescription;
-        this.setDate = setDate;
+        this.lastWateredDate = lastWateredDate;
         this.wateringInterval = wateringInterval;
         this.needsWater = needsWater;
     }
@@ -50,12 +52,12 @@ public class PlantEntity {
         this.plantDescription = plantDescription;
     }
 
-    public String getSetDate() {
-        return setDate;
+    public String getLastWateredDate() {
+        return lastWateredDate;
     }
 
-    public void setSetDate(String setDate) {
-        this.setDate = setDate;
+    public void setLastWateredDate(String lastWateredDate) {
+        this.lastWateredDate = lastWateredDate;
     }
 
     public int getWateringInterval() {
@@ -73,4 +75,41 @@ public class PlantEntity {
     public void setNeedsWater(boolean needsWater) {
         this.needsWater = needsWater;
     }
+
+
+    protected PlantEntity(Parcel in) {
+        plantID = in.readInt();
+        plantName = in.readString();
+        plantDescription = in.readString();
+        lastWateredDate = in.readString();
+        wateringInterval = in.readInt();
+        needsWater = in.readByte() != 0x00;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(plantID);
+        dest.writeString(plantName);
+        dest.writeString(plantDescription);
+        dest.writeString(lastWateredDate);
+        dest.writeInt(wateringInterval);
+        dest.writeByte((byte) (needsWater ? 0x01 : 0x00));
+    }
+
+    public static final Parcelable.Creator<PlantEntity> CREATOR = new Parcelable.Creator<PlantEntity>() {
+        @Override
+        public PlantEntity createFromParcel(Parcel in) {
+            return new PlantEntity(in);
+        }
+
+        @Override
+        public PlantEntity[] newArray(int size) {
+            return new PlantEntity[size];
+        }
+    };
 }

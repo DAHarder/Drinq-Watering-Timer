@@ -1,6 +1,7 @@
 package com.example.drinq.data.database;
 
 import android.app.Application;
+import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
@@ -27,15 +28,11 @@ public class DrinqRepository {
     }
 
     public void insert(PlantEntity plant) {
-        DrinqDatabase.databaseWriteExecutor.execute(() -> {
-            mPlantDao.insert(plant);
-        });
+        DrinqDatabase.databaseWriteExecutor.execute(() -> mPlantDao.insert(plant));
     }
 
      public void delete (PlantEntity plant) {
-         DrinqDatabase.databaseWriteExecutor.execute(()->{
-             mPlantDao.delete(plant);
-            });
+         DrinqDatabase.databaseWriteExecutor.execute(()-> mPlantDao.delete(plant));
         }
 
 }

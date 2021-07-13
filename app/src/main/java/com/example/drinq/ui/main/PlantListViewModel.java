@@ -12,8 +12,8 @@ import com.example.drinq.data.entity.PlantEntity;
 import java.util.List;
 
 public class PlantListViewModel extends AndroidViewModel {
-    private DrinqRepository mRepository;
 
+    private DrinqRepository mRepository;
     private final LiveData<List<PlantEntity>> mAllPlants;
 
     public PlantListViewModel(Application application) {
