@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,10 +19,14 @@ import com.example.drink.R;
 import com.example.drinq.data.entity.PlantEntity;
 import com.example.drinq.ui.plant.PlantEditActivity;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 //---ADAPTER---
 public class PlantListAdapter extends ListAdapter<PlantEntity, PlantListAdapter.PlantListViewHolder> {
 
     private final Context context;
+    long wateredDateDiff;
 
     public PlantListAdapter(@NonNull DiffUtil.ItemCallback<PlantEntity> diffCallback, Context context) {
         super(diffCallback);
@@ -38,7 +43,11 @@ public class PlantListAdapter extends ListAdapter<PlantEntity, PlantListAdapter.
     @Override
     public void onBindViewHolder(@NonNull PlantListViewHolder holder, int position) {
         PlantEntity current = getItem(position);
-        holder.bind(current.getPlantName());
+        wateredDateDiff = ChronoUnit.DAYS.between(LocalDate.parse(current.getLastWateredDate()), LocalDate.now());
+        if (wateredDateDiff <= current.getWateringInterval())
+            holder.bind(current.getPlantName(), false);
+        else
+            holder.bind(current.getPlantName(), true);
     }
 
     static class PlantDiff extends DiffUtil.ItemCallback<PlantEntity> {
@@ -57,10 +66,12 @@ public class PlantListAdapter extends ListAdapter<PlantEntity, PlantListAdapter.
 //---VIEW HOLDER---
 class PlantListViewHolder extends RecyclerView.ViewHolder {
         private final TextView plantItemView;
+        private final ImageView plantNeedsWaterIcon;
 
         private PlantListViewHolder(View itemView) {
             super(itemView);
             plantItemView = itemView.findViewById(R.id.plant_item_text_view);
+            plantNeedsWaterIcon = itemView.findViewById(R.id.water_needed_icon);
 
             itemView.setOnClickListener(new View.OnClickListener() {
 
@@ -76,8 +87,10 @@ class PlantListViewHolder extends RecyclerView.ViewHolder {
 
         }
 
-        public void bind(String text) {
+        public void bind(String text, boolean icon) {
             plantItemView.setText(text);
+            if (!icon)
+            plantNeedsWaterIcon.setVisibility(View.GONE);
         }
     }
 }

@@ -10,8 +10,8 @@ public class SampleData {
 
     public static List<PlantEntity> getSamplePlantData() {
         List<PlantEntity> plants = new ArrayList<>();
-        plants.add(new PlantEntity("TestPlant1", "Left of TV", LocalDate.now().toString(),7, false));
-        plants.add(new PlantEntity("TestPlant2", "Left of TV", LocalDate.now().toString(),7, false));
+        plants.add(new PlantEntity("TestPlant1", "Left of TV", "2021-07-10",7, false));
+        plants.add(new PlantEntity("TestPlant2", "Left of TV", "2021-07-04",5, false));
 
         return plants;
     }

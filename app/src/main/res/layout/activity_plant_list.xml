@@ -10,14 +10,21 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@android:color/darker_gray">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/snackbar_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Plants"
+                android:textColor="@color/black"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle=""/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/plant_list_recyclerview"

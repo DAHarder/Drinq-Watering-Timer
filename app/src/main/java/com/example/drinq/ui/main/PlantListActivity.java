@@ -51,6 +51,7 @@ public class PlantListActivity extends AppCompatActivity {
 
             PlantEntity plant = data.getExtras().getParcelable("plantSaved");
             mPlantListViewModel.insert(plant);
+            Toast.makeText(this,"Plant Saved",Toast.LENGTH_LONG).show();
         }
     }
 
