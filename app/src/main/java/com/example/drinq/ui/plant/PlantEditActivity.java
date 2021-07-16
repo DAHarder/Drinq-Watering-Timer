@@ -2,6 +2,7 @@ package com.example.drinq.ui.plant;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.example.drink.R;
 import com.example.drinq.data.entity.PlantEntity;
 import com.example.drinq.ui.main.PlantListViewModel;
 import com.example.drinq.util.DateUtils;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -28,6 +30,7 @@ public class PlantEditActivity extends AppCompatActivity {
     private PlantListViewModel plantListViewModel;
 
     PlantEntity passedPlant;
+    PlantEntity passedPlantUndo;
 
     int plantID;
     EditText plantName;
@@ -58,6 +61,7 @@ public class PlantEditActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Edit Plant"); //Edit menu Title
 
             passedPlant = getIntent().getExtras().getParcelable("plant"); //Get plant object from main activity
+            passedPlantUndo = getIntent().getExtras().getParcelable("plant");//Second plant object for undo purposes
 
             wateredDateDiff = ChronoUnit.DAYS.between(LocalDate.parse(passedPlant.getLastWateredDate()), LocalDate.now()); //Calculate time difference between now and last watered date
 
@@ -82,18 +86,22 @@ public class PlantEditActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        //Saving water date. For use with Watered Button
+        //Saving water date and water needed text. For use with Watered Button
         savedInstanceState.putString("MyString", plantWaterDate.getText().toString());
+        savedInstanceState.putInt("wateredString", plantWaterNeeded.getVisibility());
         super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        String myString = savedInstanceState.getString("MyString"); //Retrieve saved water date string
-        plantWaterDate.setText(myString);
-    }
+        String wateredDate = savedInstanceState.getString("MyString"); //Retrieve saved water date string
+        int wateredText = savedInstanceState.getInt("wateredString"); //Retrieve int for water needed text saved state
+        plantWaterDate.setText(wateredDate);
+        if (wateredText == 8)
+        plantWaterNeeded.setVisibility(View.GONE);
 
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -103,15 +111,18 @@ public class PlantEditActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        savePlant();
+        int id = item.getItemId();
+
+        if (id == R.id.save_plant_info)
+            savePlant();
+
         return super.onOptionsItemSelected(item);
     }
 
     private void savePlant() {
         if (plantName.getText().toString().trim().isEmpty() ||
-        plantDescription.getText().toString().trim().isEmpty() ||
         plantWaterInterval.getText().toString().isEmpty()) {
-            Toast.makeText(this, "All fields must be filled prior to saving plant", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Name and Interval must be filled prior to saving plant", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -139,8 +150,23 @@ public class PlantEditActivity extends AppCompatActivity {
         passedPlant.setLastWateredDate(LocalDate.now().toString());
 
         plantWaterNeeded.setVisibility(View.GONE);
-
         plantListViewModel.insert(passedPlant);
 
+        Snackbar plantWateredSnackbar = Snackbar.make(findViewById(R.id.plant_edit_snackbar), "Plant watered", Snackbar.LENGTH_LONG).setAction("UNDO", new UndoListener());
+        plantWateredSnackbar.show();
+
     }
+
+//    //Implements undo option
+    public class UndoListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (wateredDateDiff >= passedPlantUndo.getWateringInterval())
+                plantWaterNeeded.setVisibility(View.VISIBLE);
+            passedPlant.setLastWateredDate(passedPlantUndo.getLastWateredDate());
+            plantListViewModel.insert(passedPlant);
+            plantWaterDate.setText(DateUtils.formatDate(passedPlantUndo.getLastWateredDate()));
+        }
+    }
+
 }

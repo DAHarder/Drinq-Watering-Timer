@@ -45,9 +45,9 @@ public class PlantListAdapter extends ListAdapter<PlantEntity, PlantListAdapter.
         PlantEntity current = getItem(position);
         wateredDateDiff = ChronoUnit.DAYS.between(LocalDate.parse(current.getLastWateredDate()), LocalDate.now());
         if (wateredDateDiff <= current.getWateringInterval())
-            holder.bind(current.getPlantName(), false);
+            holder.bind(current.getPlantName(), current.getPlantDescription(), false);
         else
-            holder.bind(current.getPlantName(), true);
+            holder.bind(current.getPlantName(), current.getPlantDescription(),true);
     }
 
     static class PlantDiff extends DiffUtil.ItemCallback<PlantEntity> {
@@ -66,11 +66,13 @@ public class PlantListAdapter extends ListAdapter<PlantEntity, PlantListAdapter.
 //---VIEW HOLDER---
 class PlantListViewHolder extends RecyclerView.ViewHolder {
         private final TextView plantItemView;
+        private final TextView plantDescriptionView;
         private final ImageView plantNeedsWaterIcon;
 
         private PlantListViewHolder(View itemView) {
             super(itemView);
             plantItemView = itemView.findViewById(R.id.plant_item_text_view);
+            plantDescriptionView = itemView.findViewById(R.id.plant_item_description_view);
             plantNeedsWaterIcon = itemView.findViewById(R.id.water_needed_icon);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -87,8 +89,10 @@ class PlantListViewHolder extends RecyclerView.ViewHolder {
 
         }
 
-        public void bind(String text, boolean icon) {
-            plantItemView.setText(text);
+        public void bind(String plantName, String plantDescription, boolean icon) {
+            plantItemView.setText(plantName);
+            if (plantDescription != null)
+            plantDescriptionView.setText(plantDescription);
             if (!icon)
             plantNeedsWaterIcon.setVisibility(View.GONE);
         }

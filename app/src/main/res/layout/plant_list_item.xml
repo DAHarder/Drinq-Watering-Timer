@@ -13,12 +13,24 @@
             android:id="@+id/plant_item_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:text="Plants"
             android:layout_toStartOf="@id/water_needed_icon"
             android:ellipsize="end"
             android:maxLines="1"
             android:textAppearance="@android:style/TextAppearance.Large" />
+
+        <TextView
+            android:id="@+id/plant_item_description_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:text="Descriptions"
+            android:layout_toStartOf="@id/water_needed_icon"
+            android:layout_below="@+id/plant_item_text_view"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@android:style/TextAppearance.Small" />
 
         <ImageView
             android:id="@+id/water_needed_icon"

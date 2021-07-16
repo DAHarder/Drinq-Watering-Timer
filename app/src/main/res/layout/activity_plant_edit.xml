@@ -1,210 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/plant_edit_snackbar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.drinq.ui.plant.PlantEditActivity">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:orientation="vertical">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="10dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_circle_24" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:hint="Plant name:"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                <EditText
-                    android:id="@+id/plant_name_edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:hint="Plant Name"
-                    android:maxLength="30"
-                    android:inputType="textPersonName"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
-
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_baseline_notes_24" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:hint="Description:"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                <EditText
-                    android:id="@+id/plant_description_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:hint="Plant description"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:scrollbars="vertical"
-                    android:maxLength="30"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_baseline_timelapse_24" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:hint="Watering interval (in days):"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                <EditText
-                    android:id="@+id/plant_watering_interval_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:hint="Watering interval timer (in days)"
-                    android:inputType="number"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="30dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                app:srcCompat="@drawable/ic_baseline_timelapse_24" />
-
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Last Watered:"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                <TextView
-                    android:id="@+id/plant_last_watered_date_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="never"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-            </LinearLayout>
-        </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="40dp"
-            android:gravity="bottom"
+            android:layout_margin="10dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/plant_needs_watered_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="Needs Watering"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/red" />
 
-            <Button
-                android:id="@+id/plant_watered_button"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:onClick="waterPlantBtn"
-                android:text="Watered"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                app:backgroundTint="@android:color/transparent"
-                app:cornerRadius="8dp"
-                app:rippleColor="#33AAAAAA"
-                app:strokeColor="@android:color/black"
-                app:strokeWidth="1dp" />
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_circle_24" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:hint="Plant name:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                    <EditText
+                        android:id="@+id/plant_name_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:hint="Plant Name"
+                        android:inputType="textPersonName"
+                        android:maxLength="30"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/ic_baseline_notes_24" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:hint="Description:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                    <EditText
+                        android:id="@+id/plant_description_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:hint="Plant description"
+                        android:inputType="text"
+                        android:maxLength="30"
+                        android:maxLines="1"
+                        android:scrollbars="vertical"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/ic_baseline_timelapse_24" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:hint="Watering interval (in days):"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                    <EditText
+                        android:id="@+id/plant_watering_interval_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:hint="Watering interval timer (in days)"
+                        android:inputType="number"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="30dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    app:srcCompat="@drawable/ic_baseline_timelapse_24" />
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Last Watered:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                    <TextView
+                        android:id="@+id/plant_last_watered_date_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="never"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="50dp"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/plant_needs_watered_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text="Needs Watering"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/red" />
+
+                <Button
+                    android:id="@+id/plant_watered_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:onClick="waterPlantBtn"
+                    android:text="Watered"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    app:backgroundTint="@android:color/transparent"
+                    app:cornerRadius="8dp"
+                    app:rippleColor="#33AAAAAA"
+                    app:strokeColor="@android:color/black"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
-    </LinearLayout>
-    </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

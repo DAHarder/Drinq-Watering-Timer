@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.drink.R;
@@ -22,7 +23,7 @@ import com.example.drinq.ui.plant.PlantEditActivity;
 
 import java.util.List;
 
-public class PlantListActivity extends AppCompatActivity {
+public class PlantListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private PlantListViewModel mPlantListViewModel;
     public static final int NEW_PLANT_ACTIVITY_REQUEST_CODE = 1;
@@ -43,6 +44,7 @@ public class PlantListActivity extends AppCompatActivity {
         mPlantListViewModel.getAllPlants().observe(this, adapter::submitList);
 
         LiveData<List<PlantEntity>> allPlants = mPlantListViewModel.getAllPlants();
+
         }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -58,14 +60,32 @@ public class PlantListActivity extends AppCompatActivity {
         public boolean onCreateOptionsMenu(Menu menu) {
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.plant_list_menu, menu);
+            MenuItem searchItem = menu.findItem(R.id.plant_search_menu);
+            androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+
+
             return true;
         }
 
         @Override
         public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-            Intent intent = new Intent(this, PlantEditActivity.class);
-            this.startActivityForResult(intent, 1);
+            int id = item.getItemId();
+
+            if (id == R.id.new_plant) {
+                Intent intent = new Intent(this, PlantEditActivity.class);
+                this.startActivityForResult(intent, 1);
+            }
 
             return super.onOptionsItemSelected(item);
         }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
     }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+}
