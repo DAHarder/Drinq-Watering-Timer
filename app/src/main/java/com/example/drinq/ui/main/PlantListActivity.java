@@ -2,6 +2,7 @@ package com.example.drinq.ui.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,7 +14,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.drink.R;
@@ -23,7 +23,7 @@ import com.example.drinq.ui.plant.PlantEditActivity;
 
 import java.util.List;
 
-public class PlantListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class PlantListActivity extends AppCompatActivity {
 
     private PlantListViewModel mPlantListViewModel;
     public static final int NEW_PLANT_ACTIVITY_REQUEST_CODE = 1;
@@ -45,7 +45,7 @@ public class PlantListActivity extends AppCompatActivity implements SearchView.O
 
         LiveData<List<PlantEntity>> allPlants = mPlantListViewModel.getAllPlants();
 
-        }
+    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -53,39 +53,46 @@ public class PlantListActivity extends AppCompatActivity implements SearchView.O
 
             PlantEntity plant = data.getExtras().getParcelable("plantSaved");
             mPlantListViewModel.insert(plant);
-            Toast.makeText(this,"Plant Saved",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Plant Saved", Toast.LENGTH_LONG).show();
         }
     }
 
-        public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.plant_list_menu, menu);
-            MenuItem searchItem = menu.findItem(R.id.plant_search_menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.plant_list_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.plant_search_menu);
+
+        if (searchItem != null) {
             androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
-
-
-            return true;
+            searchView.setOnQueryTextListener(onQueryTextListener);
         }
 
-        @Override
-        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-            int id = item.getItemId();
-
-            if (id == R.id.new_plant) {
-                Intent intent = new Intent(this, PlantEditActivity.class);
-                this.startActivityForResult(intent, 1);
-            }
-
-            return super.onOptionsItemSelected(item);
-        }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
+        return true;
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.new_plant) {
+            Intent intent = new Intent(this, PlantEditActivity.class);
+            this.startActivityForResult(intent, 1);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
+
+    private androidx.appcompat.widget.SearchView.OnQueryTextListener onQueryTextListener =
+            new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            };
 }
