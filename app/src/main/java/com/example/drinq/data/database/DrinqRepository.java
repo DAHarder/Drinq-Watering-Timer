@@ -9,21 +9,25 @@ import com.example.drinq.data.entity.PlantEntity;
 
 import java.util.List;
 
+import kotlinx.coroutines.flow.MutableStateFlow;
+
 public class DrinqRepository {
 
     private PlantDao mPlantDao;
-    private LiveData<List<PlantEntity>> mAllPlants;
 
 
     public DrinqRepository(Application application) {
 
         DrinqDatabase db = DrinqDatabase.getDatabase(application);
         mPlantDao = db.plantDao();
-        mAllPlants = mPlantDao.getAllPlants();
     }
 
-    public LiveData<List<PlantEntity>> getAllPlants() {
-        return mAllPlants;
+    public LiveData<List<PlantEntity>> getAllPlants(String query) {
+        return mPlantDao.getAllPlants(query);
+    }
+
+    public LiveData<Integer> getCount() {
+        return mPlantDao.getCount();
     }
 
     public void insert(PlantEntity plant) {

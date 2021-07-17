@@ -18,10 +18,12 @@ import com.example.drink.R;
 import com.example.drinq.data.entity.PlantEntity;
 import com.example.drinq.ui.main.PlantListViewModel;
 import com.example.drinq.util.DateUtils;
+import com.example.drinq.util.PlantWaterNotice;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 public class PlantEditActivity extends AppCompatActivity {
 
@@ -70,10 +72,10 @@ public class PlantEditActivity extends AppCompatActivity {
             plantWaterDate.setText(DateUtils.formatDate(passedPlant.getLastWateredDate()));
             plantWaterInterval.setText(String.valueOf(passedPlant.getWateringInterval()));
 
-            if (wateredDateDiff <= passedPlant.getWateringInterval())
-                plantWaterNeeded.setVisibility(View.GONE);
-            else
+            if (PlantWaterNotice.plantWaterNotice(passedPlant))
                 plantWaterNeeded.setVisibility(View.VISIBLE);
+            else
+                plantWaterNeeded.setVisibility(View.GONE);
 
         }
         else {
@@ -132,8 +134,12 @@ public class PlantEditActivity extends AppCompatActivity {
             passedPlant.setWateringInterval(Integer.parseInt(plantWaterInterval.getText().toString().trim()));
 
             Intent intent = new Intent();
-            intent.putExtra("plantSaved", passedPlant);
-            setResult(RESULT_OK, intent);
+            if (passedPlant.equals(passedPlantUndo))
+                setResult(RESULT_CANCELED, intent);
+            else {
+                intent.putExtra("plantSaved", passedPlant);
+                setResult(RESULT_OK, intent);
+            }
         }
         else {
             PlantEntity newPlant = new PlantEntity(plantName.getText().toString().trim(), plantDescription.getText().toString().trim(), LocalDate.now().toString(), Integer.parseInt(plantWaterInterval.getText().toString().trim()), false );
@@ -161,7 +167,7 @@ public class PlantEditActivity extends AppCompatActivity {
     public class UndoListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if (wateredDateDiff >= passedPlantUndo.getWateringInterval())
+            if (PlantWaterNotice.plantWaterNotice(passedPlantUndo))
                 plantWaterNeeded.setVisibility(View.VISIBLE);
             passedPlant.setLastWateredDate(passedPlantUndo.getLastWateredDate());
             plantListViewModel.insert(passedPlant);

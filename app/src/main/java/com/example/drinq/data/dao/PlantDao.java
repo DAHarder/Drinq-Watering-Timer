@@ -25,6 +25,9 @@ public interface PlantDao {
     @Query("DELETE FROM plant_table")
     void deleteAllPlants();
 
-    @Query("SELECT * FROM plant_table ORDER BY plantID ASC")
-    LiveData<List<PlantEntity>> getAllPlants();
+    @Query("SELECT COUNT(*) FROM plant_table")
+    LiveData<Integer> getCount();
+
+    @Query("SELECT * FROM plant_table WHERE plantName LIKE '%' || :searchQuery || '%' ORDER BY plantID ASC")
+    LiveData<List<PlantEntity>> getAllPlants(String searchQuery);
 }

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.drink.R;
 import com.example.drinq.data.entity.PlantEntity;
 import com.example.drinq.ui.plant.PlantEditActivity;
+import com.example.drinq.util.PlantWaterNotice;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -43,11 +44,10 @@ public class PlantListAdapter extends ListAdapter<PlantEntity, PlantListAdapter.
     @Override
     public void onBindViewHolder(@NonNull PlantListViewHolder holder, int position) {
         PlantEntity current = getItem(position);
-        wateredDateDiff = ChronoUnit.DAYS.between(LocalDate.parse(current.getLastWateredDate()), LocalDate.now());
-        if (wateredDateDiff <= current.getWateringInterval())
-            holder.bind(current.getPlantName(), current.getPlantDescription(), false);
+        if (PlantWaterNotice.plantWaterNotice(current))
+            holder.bind(current.getPlantName(), current.getPlantDescription(), true);
         else
-            holder.bind(current.getPlantName(), current.getPlantDescription(),true);
+            holder.bind(current.getPlantName(), current.getPlantDescription(),false);
     }
 
     static class PlantDiff extends DiffUtil.ItemCallback<PlantEntity> {
@@ -91,12 +91,22 @@ class PlantListViewHolder extends RecyclerView.ViewHolder {
 
         public void bind(String plantName, String plantDescription, boolean icon) {
             plantItemView.setText(plantName);
+
             if (plantDescription != null)
             plantDescriptionView.setText(plantDescription);
+
             if (!icon)
-            plantNeedsWaterIcon.setVisibility(View.GONE);
+                plantNeedsWaterIcon.setVisibility(View.GONE);
+            else
+                plantNeedsWaterIcon.setVisibility(View.VISIBLE);
         }
     }
+
+    public PlantEntity getPlantAt(int position) {
+        final PlantEntity currentPlant = getItem(position);
+        return currentPlant;
+    }
+
 }
 
 

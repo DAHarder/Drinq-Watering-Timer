@@ -112,4 +112,21 @@ public class PlantEntity implements Parcelable {
             return new PlantEntity[size];
         }
     };
+
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj)
+            return true;
+        if (obj == null || this.getClass() != obj.getClass())
+            return false;
+
+        PlantEntity p1 = (PlantEntity) obj;
+
+        return this.plantName.equals(p1.plantName)
+                && this.plantID == p1.plantID
+                && this.plantDescription.equals(p1.plantDescription)
+                && this.lastWateredDate.equals(p1.lastWateredDate)
+                && this.wateringInterval == p1.wateringInterval
+                && this.needsWater == p1.needsWater;
+    }
 }
