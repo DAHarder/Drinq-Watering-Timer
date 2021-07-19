@@ -13,24 +13,42 @@
             android:id="@+id/plant_item_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Plants"
             android:layout_toStartOf="@id/water_needed_icon"
             android:ellipsize="end"
             android:maxLines="1"
+            android:text="Plants"
             android:textAppearance="@android:style/TextAppearance.Large" />
 
         <TextView
             android:id="@+id/plant_item_description_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:text="Descriptions"
-            android:layout_toStartOf="@id/water_needed_icon"
             android:layout_below="@+id/plant_item_text_view"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toStartOf="@id/water_needed_icon"
             android:ellipsize="end"
             android:maxLines="1"
+            android:text="Descriptions"
             android:textAppearance="@android:style/TextAppearance.Small" />
+
+        <TextView
+            android:id="@+id/water_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="40dp"
+            android:text="Water in:"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
+
+        <TextView
+            android:id="@+id/water_days_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/water_time"
+            android:layout_alignStart="@id/water_time"
+            android:text="7 Days"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
 
         <ImageView
             android:id="@+id/water_needed_icon"
