@@ -1,6 +1,7 @@
 package com.example.drinq.util;
 
 import com.example.drinq.data.entity.PlantEntity;
+import com.example.drinq.data.entity.ReportEntity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,6 +21,20 @@ public class SampleData {
         plants.add(new PlantEntity("Monstera", "right wall, second shelf", "2021-07-15",5, false));
         plants.add(new PlantEntity("Money Tree\n", "right wall, third shelf", "2021-07-15",5, false));
         plants.add(new PlantEntity("Misc plants", "", "2021-07-12",5, false));
+
+        return plants;
+    }
+
+    public static List<ReportEntity> getSampleReportData() {
+        List<ReportEntity> plants = new ArrayList<>();
+        plants.add(new ReportEntity("2021-07-08",1));
+        plants.add(new ReportEntity( "2021-07-13",1));
+        plants.add(new ReportEntity( "2021-07-18",1));
+        plants.add(new ReportEntity( "2021-07-23",1));
+        plants.add(new ReportEntity( "2021-07-28",1));
+
+        plants.add(new ReportEntity( "2021-07-08",2));
+        plants.add(new ReportEntity( "2021-07-11",2));
 
         return plants;
     }

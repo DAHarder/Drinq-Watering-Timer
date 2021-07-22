@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,9 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextPaint;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -29,6 +37,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.Objects;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class PlantListActivity extends AppCompatActivity {
 
@@ -55,8 +65,9 @@ public class PlantListActivity extends AppCompatActivity {
 
         mPlantListViewModel.getCount().observe(this, integer -> plantCount.setText(String.valueOf(integer)));
 
+        //----SWIPE CODE----
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT) {
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -69,10 +80,26 @@ public class PlantListActivity extends AppCompatActivity {
                 Snackbar snackbar = Snackbar.make(findViewById(R.id.main), "Plant deleted", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                new RecyclerViewSwipeDecorator.Builder(PlantListActivity.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addSwipeLeftBackgroundColor(Color.RED)
+                        .addSwipeLeftLabel("Delete")
+                        .setSwipeLeftLabelColor(Color.WHITE)
+                        .addActionIcon(R.drawable.ic_baseline_delete_24)
+                        .create()
+                        .decorate();
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+            }
         }).attachToRecyclerView(recyclerView);
 
         }
 
+        //----CHECK FOR SAVED ITEM----
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -80,7 +107,7 @@ public class PlantListActivity extends AppCompatActivity {
             PlantEntity plant = data.getExtras().getParcelable("plantSaved");
             PlantEntity plantOld = data.getExtras().getParcelable("plantOld");
             mPlantListViewModel.insert(plant);
-            Toast.makeText(this, "Plant Saved", Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.main), "Plant saved", Snackbar.LENGTH_LONG).show();
         }
     }
 
