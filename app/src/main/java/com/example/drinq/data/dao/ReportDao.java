@@ -11,6 +11,9 @@ import com.example.drinq.data.entity.PlantEntity;
 import com.example.drinq.data.entity.ReportEntity;
 
 import java.util.List;
+/**
+ * Reports Table Data Access Object Class using ROOM implementation
+ */
 @Dao
 public interface ReportDao {
 

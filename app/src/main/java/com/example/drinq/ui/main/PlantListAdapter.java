@@ -24,6 +24,9 @@ import com.example.drinq.util.PlantWaterNotice;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Holds the logic to fill the RecyclerView with objects
+ */
 //---ADAPTER---
 public class PlantListAdapter extends ListAdapter<PlantEntity, PlantListAdapter.PlantListViewHolder> {
 

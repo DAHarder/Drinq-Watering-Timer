@@ -10,7 +10,9 @@ import androidx.room.Query;
 import com.example.drinq.data.entity.PlantEntity;
 
 import java.util.List;
-
+/**
+ * Plants Table Data Access Object Class using ROOM implementation
+ */
 @Dao
 public interface PlantDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -6,7 +6,9 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
+/**
+ * Plant class POJO for plants table in database using ROOM
+ */
 @Entity(tableName = "plant_table")
 public class PlantEntity implements Parcelable {
 
@@ -76,7 +78,10 @@ public class PlantEntity implements Parcelable {
         this.needsWater = needsWater;
     }
 
-
+    /**
+     * Parcel constructor - allows usage of Intent.getParcalible which allows for full objects to
+     * be sent between activities
+     */
     protected PlantEntity(Parcel in) {
         plantID = in.readInt();
         plantName = in.readString();

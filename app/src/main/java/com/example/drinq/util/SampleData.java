@@ -7,6 +7,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Sample data for loading into the database for testing purposes.
+ */
 public class SampleData {
 
     public static List<PlantEntity> getSamplePlantData() {

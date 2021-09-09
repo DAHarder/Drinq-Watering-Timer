@@ -16,7 +16,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+/**
+ * Used for connection and instantiation of the Database
+ */
 @androidx.room.Database(entities = {PlantEntity.class, ReportEntity.class}, version = 5, exportSchema = false)
 public abstract class DrinqDatabase extends RoomDatabase {
 
@@ -44,7 +46,9 @@ public abstract class DrinqDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-
+    /**
+     * Call back used for pre-loading data into the database for testing
+     */
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
 
         @Override

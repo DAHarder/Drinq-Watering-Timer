@@ -23,7 +23,9 @@ import com.example.drinq.ui.plant.PlantEditActivity;
 import com.example.drinq.util.PlantWaterNotice;
 
 import org.jetbrains.annotations.NotNull;
-
+/**
+ * Holds the logic to fill the RecyclerView with objects
+ */
 public class ReportListAdapter extends ListAdapter<ReportEntity, ReportListAdapter.ReportListViewHolder> {
 
     private final Context context;

@@ -12,7 +12,9 @@ import com.example.drinq.data.entity.ReportEntity;
 import java.util.List;
 
 import kotlinx.coroutines.flow.MutableStateFlow;
-
+/**
+ * Repository used to hold and access data
+ */
 public class DrinqRepository {
 
     private PlantDao mPlantDao;

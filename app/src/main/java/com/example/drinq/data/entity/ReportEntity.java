@@ -3,7 +3,9 @@ package com.example.drinq.data.entity;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
+/**
+ * Report class POJO for reports table in database using ROOM
+ */
 @Entity(tableName = "report_table")
 public class ReportEntity {
 
