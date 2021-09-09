@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+/**
+ * Holds and date formatter variable and function
+ */
 public class DateUtils {
 
     public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEE, LLL d YYYY", Locale.US);

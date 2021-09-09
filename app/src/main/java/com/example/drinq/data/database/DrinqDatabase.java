@@ -3,7 +3,9 @@ package com.example.drinq.data.database;
 import android.content.Context;
 
 import com.example.drinq.data.dao.PlantDao;
+import com.example.drinq.data.dao.ReportDao;
 import com.example.drinq.data.entity.PlantEntity;
+import com.example.drinq.data.entity.ReportEntity;
 import com.example.drinq.util.SampleData;
 
 import androidx.annotation.NonNull;
@@ -14,13 +16,16 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-@androidx.room.Database(entities = {PlantEntity.class}, version = 3, exportSchema = false)
+/**
+ * Used for connection and instantiation of the Database
+ */
+@androidx.room.Database(entities = {PlantEntity.class, ReportEntity.class}, version = 5, exportSchema = false)
 public abstract class DrinqDatabase extends RoomDatabase {
 
     private static volatile DrinqDatabase INSTANCE;
 
     public abstract PlantDao plantDao();
+    public abstract ReportDao reportDao();
 
     private static final int NUMBER_OF_THREADS = 4;
 
@@ -41,7 +46,9 @@ public abstract class DrinqDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-
+    /**
+     * Call back used for pre-loading data into the database for testing
+     */
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
 
         @Override
@@ -49,11 +56,15 @@ public abstract class DrinqDatabase extends RoomDatabase {
             super.onOpen(db);
 
             PlantDao mPlantDao = INSTANCE.plantDao();
+            ReportDao mReportDao = INSTANCE.reportDao();
 
             databaseWriteExecutor.execute(() -> {
 
                 mPlantDao.deleteAllPlants();
                 mPlantDao.insertAll(SampleData.getSamplePlantData());
+
+                mReportDao.deleteAllPlants();
+                mReportDao.insertAll(SampleData.getSampleReportData());
 
             });
         }

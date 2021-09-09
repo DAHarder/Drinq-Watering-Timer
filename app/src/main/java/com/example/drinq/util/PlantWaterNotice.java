@@ -5,6 +5,13 @@ import com.example.drinq.data.entity.PlantEntity;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Calculates the time between the lastWateredDate of a plant
+ * and the current date and returns whether it has been longer
+ * than the listed waterInterval on the plant object.
+ *
+ * To be used with logic on activity pages.
+ */
 public class PlantWaterNotice {
 
     static long wateredDateDiff;

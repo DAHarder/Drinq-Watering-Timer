@@ -16,7 +16,10 @@ import android.widget.Toast;
 
 import com.example.drink.R;
 import com.example.drinq.data.entity.PlantEntity;
+import com.example.drinq.data.entity.ReportEntity;
 import com.example.drinq.ui.main.PlantListViewModel;
+import com.example.drinq.ui.report.ReportActivity;
+import com.example.drinq.ui.report.ReportViewModel;
 import com.example.drinq.util.DateUtils;
 import com.example.drinq.util.PlantWaterNotice;
 import com.google.android.material.snackbar.Snackbar;
@@ -25,24 +28,30 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+/**
+ * Activity for editing and creating plant objects
+ */
 public class PlantEditActivity extends AppCompatActivity {
 
     public static final String EXTRA_REPLY = "com.example.android.Drinqsql.REPLY";
 
     private PlantListViewModel plantListViewModel;
+    private ReportViewModel reportViewModel;
 
-    PlantEntity passedPlant;
-    PlantEntity passedPlantUndo;
+    private PlantEntity passedPlant;
+    private PlantEntity passedPlantUndo;
 
-    int plantID;
-    EditText plantName;
-    EditText plantDescription;
-    TextView plantWaterDate;
-    EditText plantWaterInterval;
-    TextView plantWaterNeeded;
-    Button plantWaterBtn;
+    private ReportEntity reportEntity;
 
-    long wateredDateDiff;
+    private int plantID;
+    private EditText plantName;
+    private EditText plantDescription;
+    private TextView plantWaterDate;
+    private EditText plantWaterInterval;
+    private TextView plantWaterNeeded;
+    private Button plantWaterBtn;
+
+    private long wateredDateDiff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +67,18 @@ public class PlantEditActivity extends AppCompatActivity {
 
 
         plantListViewModel = new PlantListViewModel(getApplication());
+        reportViewModel = new ReportViewModel(getApplication());
         //--- Fill in plant edit fields if needed----//
-        if (getIntent().getExtras() != null) {
+        if (getIntent().getExtras() != null || ReportActivity.passedPlant != null) {
             getSupportActionBar().setTitle("Edit Plant"); //Edit menu Title
 
-            passedPlant = getIntent().getExtras().getParcelable("plant"); //Get plant object from main activity
-            passedPlantUndo = getIntent().getExtras().getParcelable("plant");//Second plant object for undo purposes
-
+            if (getIntent().getExtras() != null) {
+                passedPlant = getIntent().getExtras().getParcelable("plant"); //Get plant object from main activity
+                passedPlantUndo = getIntent().getExtras().getParcelable("plant");//Second plant object for undo purposes
+            }
+            else if (ReportActivity.passedPlant != null){
+                passedPlant = ReportActivity.passedPlant;
+            }
             wateredDateDiff = ChronoUnit.DAYS.between(LocalDate.parse(passedPlant.getLastWateredDate()), LocalDate.now()); //Calculate time difference between now and last watered date
 
             plantName.setText(passedPlant.getPlantName());
@@ -104,13 +118,19 @@ public class PlantEditActivity extends AppCompatActivity {
         plantWaterNeeded.setVisibility(View.GONE);
 
     }
-
+//Creates and inflates the top bar menu
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.plant_edit_menu, menu);
+
+        MenuItem waterHistory = menu.findItem(R.id.plant_water_history);
+        //Remove the water history report if it is a new plant
+        if (getSupportActionBar().getTitle() == "Add Plant"){
+            waterHistory.setVisible(false);
+        }
         return true;
     }
-
+//Logic for the items within the menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -118,9 +138,22 @@ public class PlantEditActivity extends AppCompatActivity {
         if (id == R.id.save_plant_info)
             savePlant();
 
+        if (id == R.id.plant_water_history){
+            Intent intent = new Intent(this, ReportActivity.class);
+            intent.putExtra("plant", passedPlant);
+
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Saves the plant object.
+     * Returns to the plantlistactivity page with a integer cast through an intent.
+     * If the plantlistactivity page detects that integer, it will receive and save the
+     * plant object.
+     */
     private void savePlant() {
         if (plantName.getText().toString().trim().isEmpty() ||
         plantWaterInterval.getText().toString().isEmpty()) {
@@ -151,6 +184,12 @@ public class PlantEditActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Button to hold logic for watering the plant.
+     * The button will update the lastwatereddate within
+     * the plant object and save the object,
+     * @param view holds the activity view
+     */
     public void waterPlantBtn(View view) {
         plantWaterDate.setText(DateUtils.formatDate(LocalDate.now().toString()));
         passedPlant.setLastWateredDate(LocalDate.now().toString());
@@ -158,13 +197,16 @@ public class PlantEditActivity extends AppCompatActivity {
         plantWaterNeeded.setVisibility(View.GONE);
         plantListViewModel.insert(passedPlant);
 
+        reportViewModel.insert(new ReportEntity(passedPlant.getLastWateredDate(), passedPlant.getPlantID()));
+
         Snackbar plantWateredSnackbar = Snackbar.make(findViewById(R.id.plant_edit_snackbar), "Plant watered", Snackbar.LENGTH_LONG).setAction("UNDO", new UndoListener());
         plantWateredSnackbar.show();
 
+
     }
 
-//    //Implements undo option
-    public class UndoListener implements View.OnClickListener {
+//Implements undo option for the snackbar
+    private class UndoListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             if (PlantWaterNotice.plantWaterNotice(passedPlantUndo))
@@ -172,6 +214,7 @@ public class PlantEditActivity extends AppCompatActivity {
             passedPlant.setLastWateredDate(passedPlantUndo.getLastWateredDate());
             plantListViewModel.insert(passedPlant);
             plantWaterDate.setText(DateUtils.formatDate(passedPlantUndo.getLastWateredDate()));
+
         }
     }
 
