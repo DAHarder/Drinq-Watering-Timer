@@ -8,48 +8,34 @@ package com.example.drinq.ui.main;
  *
  */
 
+import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.app.Application;
-import android.content.ClipData;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.text.TextPaint;
-import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.drink.R;
-import com.example.drinq.data.database.DrinqRepository;
 import com.example.drinq.data.entity.PlantEntity;
 import com.example.drinq.ui.plant.PlantEditActivity;
-import com.example.drinq.util.DateUtils;
-import com.example.drinq.util.PlantWaterNotice;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
-import java.util.Objects;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
+
 /**
  * Application start - loads the activity_plant_list.fxml page
  */
@@ -93,9 +79,9 @@ public class PlantListActivity extends AppCompatActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 if (direction == ItemTouchHelper.LEFT) {
-                    plantUndo = adapter.getPlantAt(viewHolder.getAdapterPosition());
-                    mPlantListViewModel.delete(adapter.getPlantAt(viewHolder.getAdapterPosition()));
-                    adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                    plantUndo = adapter.getPlantAt(viewHolder.getAbsoluteAdapterPosition());
+                    mPlantListViewModel.delete(adapter.getPlantAt(viewHolder.getAbsoluteAdapterPosition()));
+                    adapter.notifyItemRemoved(viewHolder.getAbsoluteAdapterPosition());
                     Snackbar snackbar = Snackbar.make(findViewById(R.id.main), "Plant deleted", Snackbar.LENGTH_LONG).setAction("UNDO", new UndoListener());
                     snackbar.show();
                 }
@@ -131,7 +117,7 @@ public class PlantListActivity extends AppCompatActivity {
         }
     }
 
-        //Checks for a saved item from the plantEdit activity and saves it if found.
+    //Checks for a saved item from the plantEdit activity and saves it if found.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -142,9 +128,8 @@ public class PlantListActivity extends AppCompatActivity {
             Snackbar.make(findViewById(R.id.main), "Plant saved", Snackbar.LENGTH_SHORT).show();
         }
     }
-
+    //Inflate the menu; this adds items to the action bar if it is present.
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.plant_list_menu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.plant_search_menu);
@@ -156,7 +141,7 @@ public class PlantListActivity extends AppCompatActivity {
 
         return true;
     }
-//Adds logic for the menu items
+    //Adds logic for the menu items
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -168,7 +153,7 @@ public class PlantListActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-//Login for the Search bar within the menu
+    //Login for the Search bar within the menu
     private androidx.appcompat.widget.SearchView.OnQueryTextListener onQueryTextListener =
             new SearchView.OnQueryTextListener() {
                 @Override
